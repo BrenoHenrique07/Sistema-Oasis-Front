@@ -5,7 +5,6 @@ function Doenca(){
     const columns = [
         { key: 'id', label: 'ID' },
         { key: 'nome', label: 'Nome' },
-        { key: 'actions', label: ''},
         { key: 'editar', label: ''},
         { key: 'excluir', label: ''},
     ];

@@ -1,5 +1,6 @@
 import SideBar from "../components/SideBar";
 import Search from "../components/Search";
+import FormAdd from "../components/FormAdd";
 
 function Paciente(){
 
