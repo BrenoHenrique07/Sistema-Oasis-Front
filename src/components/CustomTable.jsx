@@ -1,14 +1,14 @@
 import React from 'react';
 import Search from './Search';
 
-function CustomTable({ columns, data, onDelete }) {
+function CustomTable({ columns, data, onDelete, onEdit }) {
     return (
         <div className="w-4/6 overflow-x-auto shadow-md sm:rounded-lg">
         <table className="text-sm text-left w-full">
             <thead className="text-xs text-white uppercase bg-sky-600">
             <tr>
                 {columns.map((column) => (
-                <th scope="col" className="px-6 py-3" key={column.key}>
+                <th scope="col" className="px-2 py-3" key={column.key}>
                     {column.label}
                 </th>
                 ))}
@@ -21,7 +21,7 @@ function CustomTable({ columns, data, onDelete }) {
                     if (column.key === 'editar') {
                     return (
                         <td className="px-2 py-4" key={column.key}>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                        <button onClick={() => onEdit(item.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                             Editar
                         </button>
                         </td>
