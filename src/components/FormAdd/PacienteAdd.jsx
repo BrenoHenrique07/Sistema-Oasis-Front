@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function PacienteAdd(){
+function PacienteAdd({id}){
 
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
@@ -10,12 +10,22 @@ function PacienteAdd(){
     const [dataNascimento, setDataNascimento] = useState('');
     const [showToast, setShowToast] = useState(false);
 
-    const handleSubmit = async (nome, sobrenome, cpf, endereco, doenca, dataNascimento) => {
-        let url = `http://localhost:3000/pacientes`;
+    const handleSubmit = async (nome, sobrenome, cpf, endereco, doenca, dataNascimento, id) => {
+
+        let url = '';
+        let method = '';
+
+        if(id === ''){
+            url = `http://localhost:3000/pacientes`;
+            method = 'POST';
+        } else {
+            url = `http://localhost:3000/pacientes/${id}`;
+            method = 'PUT';
+        }
 
         try {
             const response = await fetch(url, {
-                method: 'POST',
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -44,6 +54,9 @@ function PacienteAdd(){
         <div>
             <form className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className='my-8'>
+                        <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Paciente</h1>
+                    </div>
                     <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-nome">
                         Nome
@@ -82,7 +95,7 @@ function PacienteAdd(){
                     </div>
                 </div>
                 <div className="mx-auto">
-                    <button onClick={() => handleSubmit(nome, sobrenome, cpf, endereco, doenca, dataNascimento)} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
+                    <button onClick={() => handleSubmit(nome, sobrenome, cpf, endereco, doenca, dataNascimento, id)} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
                 </div>
             </form>
         </div>

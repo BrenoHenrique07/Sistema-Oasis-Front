@@ -2,17 +2,27 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function FrequenciaAdd(){
+function FrequenciaAdd({id}){
 
     const [pacienteID, setPacienteID] = useState('');
     const [showToast, setShowToast] = useState(false);
 
     const handleSubmit = async (pacienteID) => {
-        let url = `http://localhost:3000/frequencias`;
+        
+        let url = '';
+        let method = '';
+
+        if(id === ''){
+            url = `http://localhost:3000/frequencias`;
+            method = 'POST';
+        } else {
+            url = `http://localhost:3000/frequencias/${id}`;
+            method = 'PUT';
+        }
 
         try {
             const response = await fetch(url, {
-                method: 'POST',
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -40,6 +50,9 @@ function FrequenciaAdd(){
             )}
 
             <form className="w-full max-w-lg">
+                <div className='my-8'>
+                    <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Frequência</h1>
+                </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-pacienteID">

@@ -3,7 +3,7 @@ import PacienteAdd from './FormAdd/PacienteAdd';
 import ResponsavelAdd from './FormAdd/ResponsavelAdd';
 import FrequenciaAdd from './FormAdd/FrequenciaAdd';
 import DoencaAdd from './FormAdd/DoencaAdd';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,28 +14,32 @@ function Search({entity, columns}){
     const [showTable, setShowTable] = useState(true); 
     const [showForm, setShowForm] = useState(false); 
     const [showToast, setShowToast] = useState(false);
-
-    console.log(showToast);
+    const [selectedItemId, setSelectedItemId] = useState('');
 
     //formAdd
     const [formAddString, setformAddString] = useState(entity);
 
     let formAddRender = null;
+    let title = '';
 
     if(formAddString === 'pacientes') {
-        formAddRender = <PacienteAdd/>
+        formAddRender = <PacienteAdd id={selectedItemId}/>
+        title='Pacientes'
     } 
 
     if(formAddString === 'responsaveis') {
-        formAddRender = <ResponsavelAdd/>
+        formAddRender = <ResponsavelAdd id={selectedItemId}/>
+        title='Responsáveis'
     } 
 
     if(formAddString === 'frequencias') {
-        formAddRender = <FrequenciaAdd/>
+        formAddRender = <FrequenciaAdd id={selectedItemId}/>
+        title='Frequências'
     } 
 
     if(formAddString === 'doencas') {
-        formAddRender = <DoencaAdd/>
+        formAddRender = <DoencaAdd id={selectedItemId}/>
+        title='Doenças'
     } 
 
     const handleSearch = async () => {
@@ -62,9 +66,10 @@ function Search({entity, columns}){
         }
     };
 
-    const handleEdit = (itemid) => {
-        
-    }
+    const handleEdit = (itemId) => {
+        handleAdd();
+        setSelectedItemId(itemId); 
+    };
 
     const handleDelete = async (itemId) => {
         let url = `http://localhost:3000/${entity}/${itemId}`;
@@ -106,13 +111,11 @@ function Search({entity, columns}){
 
     return (
         <div className="flex flex-col justify-around w-4/5">
-
-            {showToast && (
-                <ToastContainer />
-            )}
-
             {showTable && (
                 <div className="w-full">
+                    <div className='my-12'>
+                        <h1 className='text-sky-600 font-bold text-center text-2xl'>Pesquisar {title}</h1>
+                    </div>
                     <form className="flex justify-center gap-2">
                         <div className="flex-initial w-7/12">
                             <input type="text" id="searchPacients" value={searchValue} onChange={handleInputChange} className="bg-sky-600 border border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required />
@@ -132,8 +135,18 @@ function Search({entity, columns}){
 
             {showForm && (
                 <div className="flex justify-center">
-                   {formAddRender}
+                    {formAddRender}
                 </div>
+            )}
+
+            {showForm && selectedItemId !== null && (
+                <div className="flex justify-center">
+                    {formAddRender}
+                </div>
+            )} 
+
+            {showToast && (
+                <ToastContainer />
             )}
 
             {showTable && (
@@ -141,7 +154,6 @@ function Search({entity, columns}){
                     <button onClick={handleAdd} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Adicionar</button>
                 </div>
             )}
-
         </div>
     )
 }

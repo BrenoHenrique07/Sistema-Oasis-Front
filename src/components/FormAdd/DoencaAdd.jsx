@@ -2,17 +2,27 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function DoencaAdd(){
+function DoencaAdd({id}){
     
     const [doenca, setDoenca] = useState('');
     const [showToast, setShowToast] = useState(false);
 
     const handleSubmit = async (doenca) => {
-        let url = `http://localhost:3000/doencas`;
+
+        let url = '';
+        let method = '';
+
+        if(id === ''){
+            url = `http://localhost:3000/doencas`;
+            method = 'POST';
+        } else {
+            url = `http://localhost:3000/doencas/${id}`;
+            method = 'PUT';
+        }
 
         try {
             const response = await fetch(url, {
-                method: 'POST',
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -41,6 +51,9 @@ function DoencaAdd(){
 
             <form className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className='my-8'>
+                        <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Doença</h1>
+                    </div>                   
                     <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-nome">
                         Nome

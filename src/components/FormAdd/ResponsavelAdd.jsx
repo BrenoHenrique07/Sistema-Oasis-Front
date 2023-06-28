@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function ResponsavelAdd(){
+function ResponsavelAdd({id}){
 
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
@@ -13,11 +13,21 @@ function ResponsavelAdd(){
     const [showToast, setShowToast] = useState(false);
 
     const handleSubmit = async (nome, sobrenome, cpf, endereco, rg, pacienteID) => {
-        let url = `http://localhost:3000/responsaveis`;
+        
+        let url = '';
+        let method = '';
+
+        if(id === ''){
+            url = `http://localhost:3000/responsaveis`;
+            method = 'POST';
+        } else {
+            url = `http://localhost:3000/responsaveis${id}`;
+            method = 'PUT';
+        }
 
         try {
             const response = await fetch(url, {
-                method: 'POST',
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -51,6 +61,9 @@ function ResponsavelAdd(){
 
             <form className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className='my-8'>
+                        <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Responsável</h1>
+                    </div>                    
                     <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-nome">
                         Nome
