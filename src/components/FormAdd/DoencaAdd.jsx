@@ -19,7 +19,7 @@ function DoencaAdd({ id, onSearch }){
         setDoenca(d.nome);
     }
 
-    const handleSubmit = async (doenca) => {
+    const handleSubmit = async () => {
 
         let url = '';
         let method = '';
@@ -74,7 +74,7 @@ function DoencaAdd({ id, onSearch }){
                     </div>
                 </div>
                 <div className="mx-auto">
-                    <button onClick={() => handleSubmit(doenca)} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
+                    <button onClick={handleSubmit} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
                 </div>
             </form>
         </div>

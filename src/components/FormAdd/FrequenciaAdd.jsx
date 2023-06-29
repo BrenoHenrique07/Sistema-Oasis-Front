@@ -4,7 +4,7 @@ function FrequenciaAdd({ id }){
 
     const [pacienteID, setPacienteID] = useState('');
 
-    const handleSubmit = async (pacienteID) => {
+    const handleSubmit = async () => {
         
         let url = '';
         let method = '';
@@ -52,7 +52,7 @@ function FrequenciaAdd({ id }){
                     </div>
                 </div>
                 <div className="mx-auto">
-                    <button onClick={() => handleSubmit(pacienteID)} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
+                    <button onClick={handleSubmit} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
                 </div>
             </form>
         </div>

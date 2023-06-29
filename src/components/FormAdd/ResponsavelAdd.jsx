@@ -28,7 +28,6 @@ function ResponsavelAdd({ id, onSearch }){
     }
 
     const handleSubmit = async () => {
-        
         let url = '';
         let method = '';
 
@@ -36,7 +35,7 @@ function ResponsavelAdd({ id, onSearch }){
             url = `http://localhost:3000/responsaveis`;
             method = 'POST';
         } else {
-            url = `http://localhost:3000/responsaveis${id}`;
+            url = `http://localhost:3000/responsaveis/${id}`;
             method = 'PUT';
         }
 
@@ -50,7 +49,6 @@ function ResponsavelAdd({ id, onSearch }){
                     "nome": nome,
                     "sobrenome": sobrenome,
                     "cpf": cpf,
-                    "endereco": endereco,
                     "rg": rg,
                     "pacienteId": pacienteID
                 })
@@ -111,7 +109,7 @@ function ResponsavelAdd({ id, onSearch }){
                     </div>
                 </div>
                 <div className="mx-auto">
-                    <button onClick={() => handleSubmit()} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
+                    <button onClick={handleSubmit} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
                 </div>
             </form>
         </div>
