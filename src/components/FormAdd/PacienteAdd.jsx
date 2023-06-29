@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function PacienteAdd({ id, onSearch}){
+function PacienteAdd({ id, onSearch }){
 
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
@@ -8,11 +8,14 @@ function PacienteAdd({ id, onSearch}){
     const [endereco, setEndereco] = useState('');
     const [doenca, setDoenca] = useState('');
     const [dataNascimento, setDataNascimento] = useState('');
-    const [showToast, setShowToast] = useState(false);
+    const [showTitle, setShowTitle] = useState(false);
 
     useEffect(() => {
         if(id !== ''){
             onSearch(updateValues);
+            setShowTitle(false);
+        } else {
+            setShowTitle(true);
         }
     }, [])
 
@@ -56,14 +59,11 @@ function PacienteAdd({ id, onSearch}){
                     "dataNascimento": dataNascimento
                 })
             })
-            setShowToast(true);
 
             const newData = await response.json(); 
             setData([...datas, newData]);
-
-            setShowToast(true);
         } catch (err) {
-            setShowToast(true);
+            console.log(err);
         }
         
     }
@@ -72,9 +72,16 @@ function PacienteAdd({ id, onSearch}){
         <div>
             <form className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className='my-8'>
-                        <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Paciente</h1>
-                    </div>
+                    {showTitle && (
+                        <div className='my-8'>
+                            <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Paciente</h1>
+                        </div>   
+                    )}
+                    {!showTitle && (
+                        <div className='my-8'>
+                            <h1 className='text-sky-600 font-bold text-center text-2xl'>Editar Paciente</h1>
+                        </div>   
+                    )}
                     <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-nome">
                         Nome

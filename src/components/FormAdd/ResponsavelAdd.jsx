@@ -1,18 +1,33 @@
-import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect } from 'react';
 
-function ResponsavelAdd({id}){
+function ResponsavelAdd({ id, onSearch }){
 
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
     const [cpf, setCpf] = useState('');
-    const [endereco, setEndereco] = useState('');
     const [rg, setRG] = useState('');
     const [pacienteID, setPacienteID] = useState('');
-    const [showToast, setShowToast] = useState(false);
+    const [showTitle, setShowTitle] = useState(true);
 
-    const handleSubmit = async (nome, sobrenome, cpf, endereco, rg, pacienteID) => {
+    useEffect(() => {
+        if(id !== ''){
+            onSearch(updateValues);
+            setShowTitle(false);
+        } else {
+            setShowTitle(true);
+        }
+    }, [])
+
+    const updateValues = (data) => {
+        let d = data[0];
+        setNome(d.nome);
+        setSobrenome(d.sobrenome);
+        setCpf(d.cpf);
+        setRG(d.rg);
+        setPacienteID(d.pacienteId);
+    }
+
+    const handleSubmit = async () => {
         
         let url = '';
         let method = '';
@@ -44,26 +59,26 @@ function ResponsavelAdd({id}){
             const newData = await response.json(); 
             setData([...datas, newData]);
 
-            setShowToast(true);
-            toast.success('Adicionado com sucesso');
         } catch (err) {
-            setShowToast(true);
-            toast.success('Erro ao adicionar');
+            console.log(err);
         }
         
     }
       
     return (
         <div>
-            {showToast && (
-                <ToastContainer />
-            )}
-
             <form className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className='my-8'>
-                        <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Responsável</h1>
-                    </div>                    
+                    {showTitle && (
+                        <div className='my-8'>
+                            <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Responsável</h1>
+                        </div>   
+                    )}
+                    {!showTitle && (
+                        <div className='my-8'>
+                            <h1 className='text-sky-600 font-bold text-center text-2xl'>Editar Responsável</h1>
+                        </div>   
+                    )}                    
                     <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-nome">
                         Nome
@@ -83,12 +98,6 @@ function ResponsavelAdd({id}){
                     <input className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="input-cpf" type="text" placeholder="" value={cpf} onChange={(e) => setCpf(e.target.value)} />
                     </div>
                     <div className="w-full">
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-endereco">
-                        Endereço
-                    </label>
-                    <input className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="input-endereco" type="text" placeholder=""   value={endereco} onChange={(e) => setEndereco(e.target.value)} />
-                    </div>
-                    <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-rg">
                         RG
                     </label>
@@ -102,7 +111,7 @@ function ResponsavelAdd({id}){
                     </div>
                 </div>
                 <div className="mx-auto">
-                    <button onClick={() => handleSubmit(nome, sobrenome, cpf, endereco, rg, pacienteID)} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
+                    <button onClick={() => handleSubmit()} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
                 </div>
             </form>
         </div>

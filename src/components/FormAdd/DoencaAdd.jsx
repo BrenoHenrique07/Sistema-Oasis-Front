@@ -1,11 +1,23 @@
-import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect } from 'react';
 
-function DoencaAdd({id}){
+function DoencaAdd({ id, onSearch }){
     
     const [doenca, setDoenca] = useState('');
-    const [showToast, setShowToast] = useState(false);
+    const [showTitle, setShowTitle] = useState(false);
+
+    useEffect(() => {
+        if(id !== ''){
+            onSearch(updateValues);
+            setShowTitle(false);
+        } else {
+            setShowTitle(true);
+        }
+    }, [])
+
+    const updateValues = (data) => {
+        let d = data[0];
+        setDoenca(d.nome);
+    }
 
     const handleSubmit = async (doenca) => {
 
@@ -34,26 +46,26 @@ function DoencaAdd({id}){
             const newData = await response.json(); 
             setData([...datas, newData]);
 
-            setShowToast(true);
-            toast.success('Adicionado com sucesso');
         } catch (err) {
-            setShowToast(true);
-            toast.success('Erro ao adicionar');
+            console.log(err);
         }
         
     }
 
     return (
         <div>
-            {showToast && (
-                <ToastContainer />
-            )}
-
             <form className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className='my-8'>
-                        <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Doença</h1>
-                    </div>                   
+                    {showTitle && (
+                        <div className='my-8'>
+                            <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Doença</h1>
+                        </div>   
+                    )}
+                    {!showTitle && (
+                        <div className='my-8'>
+                            <h1 className='text-sky-600 font-bold text-center text-2xl'>Editar Doença</h1>
+                        </div>   
+                    )}                      
                     <div className="w-full">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="input-nome">
                         Nome

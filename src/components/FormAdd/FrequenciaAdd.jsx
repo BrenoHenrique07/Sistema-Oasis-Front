@@ -1,11 +1,8 @@
-import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect } from 'react';
 
-function FrequenciaAdd({id}){
+function FrequenciaAdd({ id }){
 
     const [pacienteID, setPacienteID] = useState('');
-    const [showToast, setShowToast] = useState(false);
 
     const handleSubmit = async (pacienteID) => {
         
@@ -34,21 +31,14 @@ function FrequenciaAdd({id}){
             const newData = await response.json(); 
             setData([...datas, newData]);
 
-            setShowToast(true);
-            toast.success('Adicionado com sucesso');
         } catch (err) {
-            setShowToast(true);
-            toast.success('Erro ao adicionar');
+            console.log(err);
         }
         
     }
       
     return (
         <div>
-            {showToast && (
-                <ToastContainer />
-            )}
-
             <form className="w-full max-w-lg">
                 <div className='my-8'>
                     <h1 className='text-sky-600 font-bold text-center text-2xl'>Adicionar Frequência</h1>

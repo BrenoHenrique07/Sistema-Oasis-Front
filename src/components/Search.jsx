@@ -29,8 +29,6 @@ function Search({entity, columns}){
 
     const handleSearch = async (callback) => {
 
-        console.log()
-
         let url = `http://localhost:3000/${entity}`;
 
         if(searchValue != '') {
@@ -43,17 +41,20 @@ function Search({entity, columns}){
 
             setData(data);
 
-            if(callback)
-                callback(data)
+            if(callback && showFormEdit){
+                callback(data);
+            }
 
             if (searchValue !== '') {
                 setShowToast(true); 
                 toast.success('Pesquisa realizada com sucesso');
-              }
+            }
+
         } catch (err) {
-            setShowToast(true);
             console.log(err);
-            toast.error('Erro ao buscar');
+
+            setShowToast(true);
+            toast.error('Erro ao pesquisar');
         }
     };
 
@@ -109,7 +110,7 @@ function Search({entity, columns}){
     } 
 
     if(formAddString === 'frequencias') {
-        formAddRender = <FrequenciaAdd id={selectedItemId} onSearch={handleSearch}/>
+        formAddRender = <FrequenciaAdd id={selectedItemId}/>
         title='Frequências'
     } 
 
