@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function PacienteAdd({id}){
+function PacienteAdd({ id, onSearch}){
 
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
@@ -10,10 +10,28 @@ function PacienteAdd({id}){
     const [dataNascimento, setDataNascimento] = useState('');
     const [showToast, setShowToast] = useState(false);
 
-    const handleSubmit = async (nome, sobrenome, cpf, endereco, doenca, dataNascimento, id) => {
+    useEffect(() => {
+        if(id !== ''){
+            onSearch(updateValues);
+        }
+    }, [])
+
+    const updateValues = (data) => {
+        let d = data[0];
+        setNome(d.nome);
+        setSobrenome(d.sobrenome);
+        setCpf(d.cpf);
+        setEndereco(d.endereco);
+        setDoenca(d.doenca);
+        setDataNascimento(d.dataNascimento)
+    }
+
+    const handleSubmit = async () => {
 
         let url = '';
         let method = '';
+
+        console.log("vazio..." + id)
 
         if(id === ''){
             url = `http://localhost:3000/pacientes`;
@@ -95,7 +113,7 @@ function PacienteAdd({id}){
                     </div>
                 </div>
                 <div className="mx-auto">
-                    <button onClick={() => handleSubmit(nome, sobrenome, cpf, endereco, doenca, dataNascimento, id)} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
+                    <button onClick={handleSubmit} className="rounded-full border-2 border-sky-600 text-sky-600 p-1.5 px-4">Enviar</button>
                 </div>
             </form>
         </div>

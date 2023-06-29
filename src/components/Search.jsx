@@ -1,4 +1,4 @@
-import CustomTable from './customTable';
+import CustomTable from './CustomTable';
 import PacienteAdd from './FormAdd/PacienteAdd';
 import ResponsavelAdd from './FormAdd/ResponsavelAdd';
 import FrequenciaAdd from './FormAdd/FrequenciaAdd';
@@ -13,6 +13,7 @@ function Search({entity, columns}){
     const [datas, setData] = useState([]);
     const [showTable, setShowTable] = useState(true); 
     const [showForm, setShowForm] = useState(false); 
+    const [showFormEdit, setShowFormEdit] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [selectedItemId, setSelectedItemId] = useState('');
 
@@ -22,27 +23,13 @@ function Search({entity, columns}){
     let formAddRender = null;
     let title = '';
 
-    if(formAddString === 'pacientes') {
-        formAddRender = <PacienteAdd id={selectedItemId}/>
-        title='Pacientes'
-    } 
+    useEffect(() => {
+        handleSearch();
+    }, []);
 
-    if(formAddString === 'responsaveis') {
-        formAddRender = <ResponsavelAdd id={selectedItemId}/>
-        title='Responsáveis'
-    } 
+    const handleSearch = async (callback) => {
 
-    if(formAddString === 'frequencias') {
-        formAddRender = <FrequenciaAdd id={selectedItemId}/>
-        title='Frequências'
-    } 
-
-    if(formAddString === 'doencas') {
-        formAddRender = <DoencaAdd id={selectedItemId}/>
-        title='Doenças'
-    } 
-
-    const handleSearch = async () => {
+        console.log()
 
         let url = `http://localhost:3000/${entity}`;
 
@@ -56,19 +43,24 @@ function Search({entity, columns}){
 
             setData(data);
 
+            if(callback)
+                callback(data)
+
             if (searchValue !== '') {
                 setShowToast(true); 
                 toast.success('Pesquisa realizada com sucesso');
               }
         } catch (err) {
             setShowToast(true);
+            console.log(err);
             toast.error('Erro ao buscar');
         }
     };
 
     const handleEdit = (itemId) => {
-        handleAdd();
-        setSelectedItemId(itemId); 
+        setSelectedItemId(itemId);
+        setShowFormEdit(true);
+        setShowTable(false); 
     };
 
     const handleDelete = async (itemId) => {
@@ -105,9 +97,26 @@ function Search({entity, columns}){
         setSearchValue(event.target.value);
     };
 
-    useEffect(() => {
-        handleSearch();
-    }, []);
+    if(formAddString === 'pacientes') {
+        
+        formAddRender = <PacienteAdd id={selectedItemId} onSearch={handleSearch} />
+        title='Pacientes'
+    } 
+
+    if(formAddString === 'responsaveis') {
+        formAddRender = <ResponsavelAdd id={selectedItemId} onSearch={handleSearch}/>
+        title='Responsáveis'
+    } 
+
+    if(formAddString === 'frequencias') {
+        formAddRender = <FrequenciaAdd id={selectedItemId} onSearch={handleSearch}/>
+        title='Frequências'
+    } 
+
+    if(formAddString === 'doencas') {
+        formAddRender = <DoencaAdd id={selectedItemId} onSearch={handleSearch}/>
+        title='Doenças'
+    } 
 
     return (
         <div className="flex flex-col justify-around w-4/5">
@@ -139,7 +148,7 @@ function Search({entity, columns}){
                 </div>
             )}
 
-            {showForm && selectedItemId !== null && (
+            {showFormEdit && selectedItemId !== '' && (
                 <div className="flex justify-center">
                     {formAddRender}
                 </div>
