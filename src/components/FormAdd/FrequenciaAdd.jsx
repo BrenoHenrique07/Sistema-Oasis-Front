@@ -28,9 +28,6 @@ function FrequenciaAdd({ id }){
                 })
             })
 
-            const newData = await response.json(); 
-            setData([...datas, newData]);
-
         } catch (err) {
             console.log(err);
         }

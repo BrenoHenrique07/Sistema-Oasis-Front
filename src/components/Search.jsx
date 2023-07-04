@@ -35,10 +35,14 @@ function Search({entity, columns}){
             url = `http://localhost:3000/${entity}/${searchValue}`;
         }
 
+        if(selectedItemId != '') {
+            url = `http://localhost:3000/${entity}/id/${selectedItemId}`;
+        }
+
         try {
             const response = await fetch(url);
             const data = await response.json(); 
-
+            
             setData(data);
 
             if(callback && showFormEdit){

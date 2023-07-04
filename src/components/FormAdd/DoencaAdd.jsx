@@ -15,7 +15,7 @@ function DoencaAdd({ id, onSearch }){
     }, [])
 
     const updateValues = (data) => {
-        let d = data[0];
+        let d = data;
         setDoenca(d.nome);
     }
 
@@ -42,9 +42,6 @@ function DoencaAdd({ id, onSearch }){
                     "nome": doenca
                 })
             })
-
-            const newData = await response.json(); 
-            setData([...datas, newData]);
 
         } catch (err) {
             console.log(err);

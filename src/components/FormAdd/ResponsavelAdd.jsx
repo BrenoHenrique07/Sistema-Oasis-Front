@@ -19,7 +19,7 @@ function ResponsavelAdd({ id, onSearch }){
     }, [])
 
     const updateValues = (data) => {
-        let d = data[0];
+        let d = data;
         setNome(d.nome);
         setSobrenome(d.sobrenome);
         setCpf(d.cpf);
@@ -53,9 +53,6 @@ function ResponsavelAdd({ id, onSearch }){
                     "pacienteId": pacienteID
                 })
             })
-
-            const newData = await response.json(); 
-            setData([...datas, newData]);
 
         } catch (err) {
             console.log(err);

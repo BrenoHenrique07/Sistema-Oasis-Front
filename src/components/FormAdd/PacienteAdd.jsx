@@ -20,7 +20,9 @@ function PacienteAdd({ id, onSearch }){
     }, [])
 
     const updateValues = (data) => {
-        let d = data[0];
+        console.log(data);
+
+        let d = data;
         setNome(d.nome);
         setSobrenome(d.sobrenome);
         setCpf(d.cpf);
@@ -60,8 +62,6 @@ function PacienteAdd({ id, onSearch }){
                 })
             })
 
-            const newData = await response.json(); 
-            setData([...datas, newData]);
         } catch (err) {
             console.log(err);
         }
